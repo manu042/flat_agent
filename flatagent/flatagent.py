@@ -25,8 +25,7 @@ class FlatAgent:
             self.agent()
             sleep_time = self.__calc_sleep_time()
             logger.info("Sleep for {} seconds.".format(sleep_time))
-            # time.sleep(sleep_time)
-            time.sleep(5)
+            time.sleep(sleep_time)
 
     def agent(self):
         expose_links = self.parser.query_expose_links(settings.SEARCH_URL)
