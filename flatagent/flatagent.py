@@ -19,13 +19,15 @@ class FlatAgent:
         self.run_agent()
 
     def run_agent(self):
-
-        while True:
-            logger.info("Scrap new results")
-            self.agent()
-            sleep_time = self.__calc_sleep_time()
-            logger.info("Sleep for {} seconds.".format(sleep_time))
-            time.sleep(sleep_time)
+        try:
+            while True:
+                logger.info("Scrap new results")
+                # self.agent()
+                sleep_time = self.__calc_sleep_time()
+                logger.info("Sleep for {} seconds.".format(sleep_time))
+                time.sleep(sleep_time)
+        except Exception as e:
+            logger.error("Programm failed with the following error:\n{}".format(e))
 
     def agent(self):
         expose_links = self.parser.query_expose_links(settings.SEARCH_URL)
