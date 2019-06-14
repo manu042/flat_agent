@@ -1,12 +1,15 @@
+import os
 import requests
 import datetime
 from bs4 import BeautifulSoup
+
+from tools.settings import settings
 
 
 class ImmoScoutParser:
 
     def __init__(self):
-        pass
+        self.template_path = os.path.join(settings.BASE_PATH, "flatagent", "messenger", "body_template.html")
 
     def query_expose_links(self, search_url):
         r = requests.get(search_url)
@@ -68,3 +71,25 @@ class ImmoScoutParser:
             soup_match = None
 
         return soup_match
+
+    def create_subject(self):
+        return "Neues Angebot auf Immobilienscout24 gefunden"
+
+    def create_mail_body(self, expose_details):
+        expose_title = expose_details["expose_title"]
+        total_rent = expose_details["total_rent"]
+        cold_rent = expose_details["cold_rent"]
+        city_district = expose_details["city_district"]
+        expose_link = expose_details["expose_link"]
+
+        with open(self.template_path) as fp:
+            mail_body = fp.read()
+
+        mail_body = mail_body.format(expose_title=expose_title,
+                                     total_rent=total_rent,
+                                     cold_rent=cold_rent,
+                                     city_district=city_district,
+                                     expose_link=expose_link,
+                                     )
+
+        return mail_body

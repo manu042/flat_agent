@@ -3,7 +3,7 @@ import random
 import logging.config
 from tools.settings import settings
 from tools.log_config import LOG_CONFIG_DICT
-from parser.parser import ImmoScoutParser
+from immoscout.parser import ImmoScoutParser
 from tools.save_expose import save_expose_details
 from messenger.mail_messenger import MailMessenger
 
@@ -15,8 +15,9 @@ class FlatAgent:
 
     def __init__(self):
         self.parser = ImmoScoutParser()
-        self.messenger = MailMessenger()
-        self.run_agent()
+        self.mail_messenger = MailMessenger()
+        self.from_email = settings.DEFAULT_FROM_EMAIL
+        self.to_email = settings.DEFAULT_TO_EMAIL
 
     def run_agent(self):
         try:
@@ -28,6 +29,7 @@ class FlatAgent:
                 time.sleep(sleep_time)
         except Exception as e:
             logger.error("Programm failed with the following error:\n{}".format(e))
+            self.send_error_msg(e)
 
     def agent(self):
         expose_links = self.parser.query_expose_links(settings.SEARCH_URL)
@@ -39,7 +41,11 @@ class FlatAgent:
 
             if new_expose:
                 new_results += 1
-                self.messenger.send_notification(expose_details)
+
+                subject = self.parser.create_subject()
+                mail_body = self.parser.create_mail_body(expose_details)
+                msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body)
+                self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
 
         if new_results > 1:
             print("Es wurden {} neue Immobilien gefunden".format(new_results))
@@ -55,9 +61,16 @@ class FlatAgent:
 
         return sec
 
+    def send_error_msg(self, error_msg):
+        subject = "FlatAgent - Fehlermeldung"
+        mail_body = "FlatAgent wurde unerwartet beendet:\n{}".format(error_msg)
+        msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body)
+        self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
+
 
 def main():
     agent = FlatAgent()
+    agent.run_agent()
 
 
 if __name__ == '__main__':
