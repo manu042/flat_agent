@@ -23,7 +23,7 @@ class FlatAgent:
         try:
             while True:
                 logger.info("Scrap new results")
-                # self.agent()
+                self.agent()
                 sleep_time = self.__calc_sleep_time()
                 logger.info("Sleep for {} seconds.".format(sleep_time))
                 time.sleep(sleep_time)
