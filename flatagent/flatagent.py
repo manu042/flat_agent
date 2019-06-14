@@ -37,6 +37,7 @@ class FlatAgent:
             new_expose = save_expose_details(expose_details)
 
             if new_expose:
+                new_results += 1
                 self.messenger.send_notification(expose_details)
 
         if new_results > 1:
