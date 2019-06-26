@@ -26,6 +26,7 @@ class Settings:
 
         # Load Immobilienscout24 settings
         self.SEARCH_URL = config["IMMO_SCOUT_24"]["SEARCH_URL"]
+        self.ATTACHMENT = config["IMMO_SCOUT_24"]["ATTACHMENT"]
 
 
 settings = Settings()

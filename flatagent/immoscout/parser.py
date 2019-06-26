@@ -24,8 +24,7 @@ class ImmoScoutParser:
         for result in results:
             link = result.find_all("a", href=True)[0]
             expose_link = link["href"]
-            expose_link = "https://www.immobilienscout24.de{}".format(
-                expose_link)
+            expose_link = "https://www.immobilienscout24.de{}".format(expose_link)
 
             expose_links.append(expose_link)
 
@@ -63,6 +62,20 @@ class ImmoScoutParser:
                           }
 
         return expose_details
+
+    def get_attachment(self, expose_link):
+        try:
+            url = "{}/print".format(expose_link)
+            r = requests.get(url)
+            content = r.content
+        except:
+            try:
+                r = requests.get(expose_link)
+                content = r.text
+            except:
+                content = None
+
+        return content
 
     def get_soup_text(self, soup_match):
         try:

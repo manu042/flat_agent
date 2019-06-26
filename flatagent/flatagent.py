@@ -39,12 +39,17 @@ class FlatAgent:
             expose_details = self.parser.query_expose_details(link)
             new_expose = save_expose_details(expose_details)
 
+            if settings.ATTACHMENT:
+                attachment = self.parser.get_attachment(link)
+            else:
+                attachment = None
+
             if new_expose:
                 new_results += 1
 
                 subject = self.parser.create_subject()
                 mail_body = self.parser.create_mail_body(expose_details)
-                msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body)
+                msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body, attachment)
                 self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
 
         if new_results > 1:
@@ -53,6 +58,7 @@ class FlatAgent:
             print("Es wurde eine neue Immobilie gefunden")
         else:
             print("Keine neue Immobilie gefunden")
+
 
     def __calc_sleep_time(self):
         mul = random.randint(3,6)
@@ -71,9 +77,8 @@ class FlatAgent:
 def main():
     while True:
         try:
-            # agent = FlatAgent()
-            # agent.run_agent()
-            break
+            agent = FlatAgent()
+            agent.run_agent()
         except KeyboardInterrupt:
             break
         except Exception as e:
