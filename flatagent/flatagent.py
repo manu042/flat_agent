@@ -69,8 +69,15 @@ class FlatAgent:
 
 
 def main():
-    agent = FlatAgent()
-    agent.run_agent()
+    while True:
+        try:
+            # agent = FlatAgent()
+            # agent.run_agent()
+            break
+        except KeyboardInterrupt:
+            break
+        except Exception as e:
+            time.sleep(60)
 
 
 if __name__ == '__main__':
