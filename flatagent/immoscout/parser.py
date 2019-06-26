@@ -79,6 +79,8 @@ class ImmoScoutParser:
         expose_title = expose_details["expose_title"]
         total_rent = expose_details["total_rent"]
         cold_rent = expose_details["cold_rent"]
+        area = expose_details["area"]
+        street = expose_details["street"]
         city_district = expose_details["city_district"]
         expose_link = expose_details["expose_link"]
 
@@ -88,6 +90,8 @@ class ImmoScoutParser:
         mail_body = mail_body.format(expose_title=expose_title,
                                      total_rent=total_rent,
                                      cold_rent=cold_rent,
+                                     area=area,
+                                     street=street,
                                      city_district=city_district,
                                      expose_link=expose_link,
                                      )
