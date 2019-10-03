@@ -8,7 +8,7 @@ class Settings:
 
     BASE_PATH = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     LOG_FILE_PATH = os.path.join(BASE_PATH, "logs", "flat_agent.log")
-    JSON_FILE_PATH = os.path.join(BASE_PATH, "logs", "real_estate.json")
+    JSON_FILE_PATH = os.path.join(BASE_PATH, "data", "real_estate.json")
 
     def __init__(self):
         # load config file
