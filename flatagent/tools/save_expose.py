@@ -1,6 +1,11 @@
+import os
 import json
+from tools.settings import settings
 
-JSON_FILE = "real_estate.json"
+
+json_dir_path = os.path.dirname(settings.JSON_FILE_PATH)
+if not os.path.exists(json_dir_path):
+    os.makedirs(json_dir_path)
 
 
 def save_expose_details(expose_details):
@@ -14,7 +19,7 @@ def save_expose_details(expose_details):
         new_expose = True
         json_data[expose_no] = expose_details
 
-        with open("real_estate.json", "w") as fp:
+        with open(settings.JSON_FILE_PATH, "w") as fp:
             json.dump(json_data, fp, ensure_ascii=False)
 
     return new_expose
@@ -22,7 +27,7 @@ def save_expose_details(expose_details):
 
 def read_json_file():
     try:
-        with open(JSON_FILE, "r") as fp:
+        with open(settings.JSON_FILE_PATH, "r") as fp:
             data = json.load(fp)
     except:
         data = {}

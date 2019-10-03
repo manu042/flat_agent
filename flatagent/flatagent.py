@@ -59,9 +59,8 @@ class FlatAgent:
         else:
             print("Keine neue Immobilie gefunden")
 
-
     def __calc_sleep_time(self):
-        mul = random.randint(3,6)
+        mul = random.randint(3, 6)
         add = random.randint(0, 20)
         sec = 60 * mul + add
 
