@@ -5,7 +5,7 @@ from tools.settings import settings
 from tools.log_config import LOG_CONFIG_DICT
 from immoscout.parser import ImmoScoutParser
 from tools.save_expose import save_expose_details
-from messenger.mail_messenger import MailMessenger
+from messenger.telegram_messenger import TelegramMessenger
 
 logging.config.dictConfig(LOG_CONFIG_DICT)
 logger = logging.getLogger("default")
@@ -15,9 +15,7 @@ class FlatAgent:
 
     def __init__(self):
         self.parser = ImmoScoutParser()
-        self.mail_messenger = MailMessenger()
-        self.from_email = settings.DEFAULT_FROM_EMAIL
-        self.to_email = settings.DEFAULT_TO_EMAIL
+        self.telegram_messenger = TelegramMessenger()
 
     def run_agent(self):
         try:
@@ -29,7 +27,6 @@ class FlatAgent:
                 time.sleep(sleep_time)
         except Exception as e:
             logger.error("Programm failed with the following error:\n{}".format(e))
-            self.send_error_msg(e)
 
     def agent(self):
         expose_links = self.parser.query_expose_links(settings.SEARCH_URL)
@@ -39,18 +36,10 @@ class FlatAgent:
             expose_details = self.parser.query_expose_details(link)
             new_expose = save_expose_details(expose_details)
 
-            if settings.ATTACHMENT:
-                attachment = self.parser.get_attachment(link)
-            else:
-                attachment = None
-
             if new_expose:
                 new_results += 1
-
-                subject = self.parser.create_subject()
-                mail_body = self.parser.create_mail_body(expose_details)
-                msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body, attachment)
-                self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
+                msg = self.telegram_messenger.create_text_msg(expose_details)
+                self.telegram_messenger.send_message(msg)
 
         if new_results > 1:
             print("Es wurden {} neue Immobilien gefunden".format(new_results))
@@ -65,12 +54,6 @@ class FlatAgent:
         sec = 60 * mul + add
 
         return sec
-
-    def send_error_msg(self, error_msg):
-        subject = "FlatAgent - Fehlermeldung"
-        mail_body = "FlatAgent wurde unerwartet beendet:\n{}".format(error_msg)
-        msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body)
-        self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
 
 
 def main():

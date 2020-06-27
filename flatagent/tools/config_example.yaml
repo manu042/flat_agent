@@ -6,6 +6,10 @@ MAIL_SETTINGS:
   DEFAULT_FROM_EMAIL: user@example.com
   DEFAULT_TO_EMAIL: user@example.com
 
+TELEGRAM_SETTINGS:
+  TOKEN: 123456789:ABCDEFabcdef01234
+  CHAT_ID: 123456789
+
 IMMO_SCOUT_24:
   SEARCH_URL: https://www.immobilienscout24.de/Suche/S-2/Wohnung-Miete/Hamburg/Hamburg/-/-/-/EURO--1500,00
   ATTACHMENT: True

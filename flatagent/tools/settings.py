@@ -24,6 +24,10 @@ class Settings:
         self.DEFAULT_FROM_EMAIL = config["MAIL_SETTINGS"]["DEFAULT_FROM_EMAIL"]
         self.DEFAULT_TO_EMAIL = config["MAIL_SETTINGS"]["DEFAULT_TO_EMAIL"]
 
+        # Load Telegram settings
+        self.TELEGRAM_TOKEN = config["TELEGRAM_SETTINGS"]["TOKEN"]
+        self.CHAT_ID = config["TELEGRAM_SETTINGS"]["CHAT_ID"]
+
         # Load Immobilienscout24 settings
         self.SEARCH_URL = config["IMMO_SCOUT_24"]["SEARCH_URL"]
         self.ATTACHMENT = config["IMMO_SCOUT_24"]["ATTACHMENT"]
