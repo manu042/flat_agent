@@ -11,9 +11,9 @@ class Settings:
     def __init__(self):
         # Load Mail settings
         self.EMAIL_HOST = os.environ["EMAIL_HOST"]
-        self.EMAIL_HOST_PORT = os.environ["EMAIL_HOST_PORT"]
-        self.EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-        self.EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+        self.EMAIL_HOST_PORT = os.environ["EMAIL_PORT"]
+        self.EMAIL_HOST_USER = os.environ["EMAIL_USER"]
+        self.EMAIL_HOST_PASSWORD = os.environ["EMAIL_PASSWORD"]
         self.DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
         self.DEFAULT_TO_EMAIL = os.environ["DEFAULT_TO_EMAIL"]
 
