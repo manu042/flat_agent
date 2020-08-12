@@ -45,7 +45,7 @@ class ImmoScoutParser:
 
         # parse expose details from html
         expose_title = soup.find("h1", attrs={"data-qa": "expose-title"})
-        cold_rent = soup.find("div", class_="is24qa-kaltmiete is24-value font-semibold")
+        cold_rent = soup.find("div", class_="is24qa-kaltmiete is24-value font-semibold is24-preis-value")
         room_no = soup.find("div", class_="is24qa-zi is24-value font-semibold")
         area = soup.find("div", class_="is24qa-flaeche is24-value font-semibold")
         total_rent = soup.find("dd", class_="is24qa-gesamtmiete grid-item three-fifths font-bold")
