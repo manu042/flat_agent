@@ -16,19 +16,22 @@ class ImmoScoutParser:
         headers = {'User-Agent': self.user_agent}
         r = requests.get(search_url, headers=headers)
 
-        soup = BeautifulSoup(r.content, 'html.parser')
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.content, 'html.parser')
 
-        # get search results from html as list
-        results = soup.find_all("li", class_="result-list__listing")
+            # get search results from html as list
+            results = soup.find_all("li", class_="result-list__listing")
 
-        # get the expose links
-        expose_links = []
-        for result in results:
-            link = result.find_all("a", href=True)[0]
-            expose_link = link["href"]
-            expose_link = "https://www.immobilienscout24.de{}".format(expose_link)
+            # get the expose links
+            expose_links = []
+            for result in results:
+                link = result.find_all("a", href=True)[0]
+                expose_link = link["href"]
+                expose_link = "https://www.immobilienscout24.de{}".format(expose_link)
 
-            expose_links.append(expose_link)
+                expose_links.append(expose_link)
+        else:
+            expose_links = r.status_code
 
         return expose_links
 
