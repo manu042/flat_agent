@@ -9,7 +9,7 @@ from tools.settings import settings
 class ImmoScoutParser:
 
     def __init__(self):
-        self.template_path = os.path.join(settings.BASE_PATH, "flatagent", "messenger", "body_template.html")
+        self.template_path = os.path.join(settings.BASE_PATH, "messenger", "body_template.html")
         self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
 
     def query_expose_links(self, search_url):
