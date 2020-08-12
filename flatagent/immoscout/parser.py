@@ -40,31 +40,35 @@ class ImmoScoutParser:
         headers = {'User-Agent': user_agent}
         r = requests.get(expose_link, headers=headers)
 
-        encoded_text = r.text.encode("utf8")
-        soup = BeautifulSoup(encoded_text, 'html.parser')
+        if r.status_code == 200:
 
-        # parse expose details from html
-        expose_title = soup.find("h1", attrs={"data-qa": "expose-title"})
-        cold_rent = soup.find("div", class_="is24qa-kaltmiete is24-value font-semibold is24-preis-value")
-        room_no = soup.find("div", class_="is24qa-zi is24-value font-semibold")
-        area = soup.find("div", class_="is24qa-flaeche is24-value font-semibold")
-        total_rent = soup.find("dd", class_="is24qa-gesamtmiete grid-item three-fifths font-bold")
-        street = soup.find("span", class_="block font-nowrap print-hide")
-        city_district = soup.find("span", class_="zip-region-and-country")
-        text = soup.find("pre", class_="is24qa-lage text-content short-text")
-        other_text = soup.find("pre", class_="is24qa-sonstiges text-content short-text")
+            encoded_text = r.text.encode("utf8")
+            soup = BeautifulSoup(encoded_text, 'html.parser')
 
-        expose_details = {"expose_link": expose_link,
-                          "expose_title": self.get_soup_text(expose_title),
-                          "total_rent": self.get_soup_text(total_rent),
-                          "cold_rent": self.get_soup_text(cold_rent),
-                          "area": self.get_soup_text(area),
-                          "room_no": self.get_soup_text(room_no),
-                          "street": self.get_soup_text(street),
-                          "city_district": self.get_soup_text(city_district),
-                          "text": self.get_soup_text(text),
-                          "request_date": time_stamp,
-                          }
+            # parse expose details from html
+            expose_title = soup.find("h1", attrs={"data-qa": "expose-title"})
+            cold_rent = soup.find("div", class_="is24qa-kaltmiete is24-value font-semibold is24-preis-value")
+            room_no = soup.find("div", class_="is24qa-zi is24-value font-semibold")
+            area = soup.find("div", class_="is24qa-flaeche is24-value font-semibold")
+            total_rent = soup.find("dd", class_="is24qa-gesamtmiete grid-item three-fifths font-bold")
+            street = soup.find("span", class_="block font-nowrap print-hide")
+            city_district = soup.find("span", class_="zip-region-and-country")
+            text = soup.find("pre", class_="is24qa-lage text-content short-text")
+            other_text = soup.find("pre", class_="is24qa-sonstiges text-content short-text")
+
+            expose_details = {"expose_link": expose_link,
+                              "expose_title": self.get_soup_text(expose_title),
+                              "total_rent": self.get_soup_text(total_rent),
+                              "cold_rent": self.get_soup_text(cold_rent),
+                              "area": self.get_soup_text(area),
+                              "room_no": self.get_soup_text(room_no),
+                              "street": self.get_soup_text(street),
+                              "city_district": self.get_soup_text(city_district),
+                              "text": self.get_soup_text(text),
+                              "request_date": time_stamp,
+                              }
+        else:
+            expose_details = r.status_code
 
         return expose_details
 

@@ -37,20 +37,24 @@ class FlatAgent:
         new_results = 0
         for link in expose_links:
             expose_details = self.parser.query_expose_details(link)
-            new_expose = save_expose_details(expose_details)
 
-            if settings.ATTACHMENT:
-                attachment = self.parser.get_attachment(link)
+            if isinstance(expose_details, dict):
+                new_expose = save_expose_details(expose_details)
+
+                if settings.ATTACHMENT:
+                    attachment = self.parser.get_attachment(link)
+                else:
+                    attachment = None
+
+                if new_expose:
+                    new_results += 1
+
+                    subject = self.parser.create_subject()
+                    mail_body = self.parser.create_mail_body(expose_details)
+                    msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body, attachment)
+                    self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
             else:
-                attachment = None
-
-            if new_expose:
-                new_results += 1
-
-                subject = self.parser.create_subject()
-                mail_body = self.parser.create_mail_body(expose_details)
-                msg = self.mail_messenger.create_message(self.from_email, self.to_email, subject, mail_body, attachment)
-                self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
+                logger.warning("HTTP status codes: " + expose_details)
 
         if new_results > 1:
             print("Es wurden {} neue Immobilien gefunden".format(new_results))
