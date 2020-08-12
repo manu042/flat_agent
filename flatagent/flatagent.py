@@ -56,6 +56,8 @@ class FlatAgent:
                         self.mail_messenger.send_mail(self.from_email, self.to_email, msg)
                 else:
                     logger.warning("HTTP status code: " + expose_details)
+
+                time.sleep(3)
         else:
             logger.warning("HTTP status code: " + expose_links)
 
@@ -67,7 +69,7 @@ class FlatAgent:
             print("Keine neue Immobilie gefunden")
 
     def __calc_sleep_time(self):
-        mul = random.randint(3, 6)
+        mul = random.randint(5, 9)
         add = random.randint(0, 20)
         sec = 60 * mul + add
 
