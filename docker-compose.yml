@@ -12,6 +12,6 @@ services:
       DEFAULT_TO_EMAIL: mail@example.com
       SEARCH_URL: https://www.immobilienscout24.de/Suche/S-2/Wohnung-Miete/Hamburg/Hamburg/-/-/-/EURO--1500,00
     volumes:
-      - /docker-data/flatagent/data:/root/flat_agent/data
+      - /docker-data/flatagent/data:/root/flatagent/data
     container_name: flat-agent
     restart: unless-stopped
