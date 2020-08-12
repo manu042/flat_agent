@@ -10,10 +10,10 @@ class ImmoScoutParser:
 
     def __init__(self):
         self.template_path = os.path.join(settings.BASE_PATH, "flatagent", "messenger", "body_template.html")
+        self.user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
 
     def query_expose_links(self, search_url):
-        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
-        headers = {'User-Agent': user_agent}
+        headers = {'User-Agent': self.user_agent}
         r = requests.get(search_url, headers=headers)
 
         soup = BeautifulSoup(r.content, 'html.parser')
@@ -36,8 +36,7 @@ class ImmoScoutParser:
         time_stamp = datetime.datetime.now()
         time_stamp = datetime.datetime.strftime(time_stamp, "%Y-%m-%d %H:%M")
 
-        user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'
-        headers = {'User-Agent': user_agent}
+        headers = {'User-Agent': self.user_agent}
         r = requests.get(expose_link, headers=headers)
 
         if r.status_code == 200:
@@ -75,14 +74,12 @@ class ImmoScoutParser:
     def get_attachment(self, expose_link):
         try:
             url = "{}/print".format(expose_link)
-            user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36'
-            headers = {'User-Agent': user_agent}
+            headers = {'User-Agent': self.user_agent}
             r = requests.get(url, headers=headers)
             content = r.content
         except:
             try:
-                user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/76.0.3809.100 Safari/537.36'
-                headers = {'User-Agent': user_agent}
+                headers = {'User-Agent': self.user_agent}
                 r = requests.get(expose_link, headers=headers)
                 content = r.text
             except:
